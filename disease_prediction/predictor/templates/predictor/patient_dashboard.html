@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+</head>
+<body>
+    <h1>Patient Dashboard</h1>
+    <h2>Past Predictions</h2>
+    
+    <table border="1">
+        <tr>
+            <th>Symptoms</th>
+            <th>Predicted Disease</th>
+            <th>Date</th>
+        </tr>
+        {% for prediction in predictions %}
+        <tr>
+            <td>{{ prediction.symptoms }}</td>
+            <td>{{ prediction.predicted_disease }}</td>
+            <td>{{ prediction.date }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No predictions found</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

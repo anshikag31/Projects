@@ -1,2 +1,2 @@
-# Project
+# AI Disease Prediciton System 
 Major

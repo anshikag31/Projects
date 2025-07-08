@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from agent import agent, memory
+from backend.agent import agent, memory
 
 app = FastAPI()
 

@@ -5,7 +5,8 @@ from langchain.memory import ConversationBufferMemory
 from datetime import datetime, timedelta
 import re
 from dateparser.search import search_dates
-from calendar_utils import check_availability, book_appointment
+from backend.calendar_utils import check_availability, book_appointment
+
 
 # Use local LLaMA 3 model via Ollama
 llm = Ollama(model="gemma3")

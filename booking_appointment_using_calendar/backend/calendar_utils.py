@@ -1,16 +1,19 @@
 import datetime
 import dateparser
+import json
+import os
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from dateparser import parse as parse_date
 from datetime import timedelta
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-SERVICE_ACCOUNT_FILE = 'service_account.json'
 CALENDAR_ID = 'anshikagoel3108@gmail.com'
 
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+# 🔐 Load service account credentials from environment variable
+creds_info = json.loads(os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON"])
+credentials = service_account.Credentials.from_service_account_info(
+    creds_info, scopes=SCOPES)
 service = build('calendar', 'v3', credentials=credentials)
 
 def parse_future_datetime(text: str):
@@ -21,14 +24,11 @@ def parse_future_datetime(text: str):
             'RELATIVE_BASE': datetime.datetime.now()
         }
     )
-    if not dt:
-        return None
-    return dt
-
+    return dt if dt else None
 
 def check_availability(start_text: str, end_text: str) -> str:
-    start_dt = parse_time(start_text)
-    end_dt = parse_time(end_text)
+    start_dt = parse_date(start_text)
+    end_dt = parse_date(end_text)
 
     if not start_dt or not end_dt:
         return "❌ Could not parse start or end time."
@@ -36,7 +36,6 @@ def check_availability(start_text: str, end_text: str) -> str:
     start_iso = start_dt.isoformat()
     end_iso = end_dt.isoformat()
 
-    # Append timezone offset if missing (RFC3339 format)
     if start_dt.tzinfo is None:
         start_iso += "+05:30"
     if end_dt.tzinfo is None:
@@ -91,11 +90,8 @@ def book_appointment(summary, start_time, end_time=None):
 
     try:
         service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
-
-        # Human-readable format
         readable_start = start_dt.strftime("%A, %d %B %Y at %I:%M %p")
         readable_end = end_dt.strftime("%I:%M %p")
-
         return f"✅ Meeting booked on {readable_start} to {readable_end}."
     except Exception as e:
         return f"❌ Error booking meeting: {e}"

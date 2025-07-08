@@ -1,2 +1,2 @@
-# AI Disease Prediciton System 
-Major - Group Project
+# Major Projects
+

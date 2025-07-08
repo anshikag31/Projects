@@ -21,7 +21,7 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                res = requests.post("http://127.0.0.1:8000/chat", json={"text": user_input})
+                res = requests.post("https://calendar-zo7z.onrender.com/", json={"text": user_input})
                 reply = res.json()["response"]
             except Exception:
                 reply = "❌ An error occurred while processing your request. Please check the backend logs."

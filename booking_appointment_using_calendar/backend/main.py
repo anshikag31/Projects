@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .agent import agent, memory
-
+from booking_appointment_using_calendar.backend.agent import agent, memory
 
 app = FastAPI()
 

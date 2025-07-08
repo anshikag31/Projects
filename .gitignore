@@ -2,3 +2,4 @@ venv/
 __pycache__/ 
 service_account.json 
 banded-equator-465114-k4-1ead1235c724.json 
+".env" 

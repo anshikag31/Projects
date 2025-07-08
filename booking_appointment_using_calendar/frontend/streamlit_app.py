@@ -15,17 +15,16 @@ for msg in st.session_state.messages:
 user_input = st.chat_input("Ask to book a meeting...")
 
 if user_input:
-    # Save user message
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                res = requests.post("https://calendar-zo7z.onrender.com", json={"text": user_input})
-                reply = res.json()["response"]
+                res = requests.post("https://calendar-zo7z.onrender.com/chat", json={"text": user_input})
+                res.raise_for_status()
+                reply = res.json().get("response", "⚠️ No response key in backend reply.")
             except Exception:
                 reply = "❌ An error occurred while processing your request. Please check the backend logs."
 
-            # Display assistant message
             st.write(reply)
             st.session_state.messages.append({"role": "assistant", "content": reply})

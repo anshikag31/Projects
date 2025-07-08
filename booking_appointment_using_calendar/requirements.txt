@@ -1,9 +1,11 @@
-fastapi
-uvicorn
 streamlit
-langchain
-langchain-community
+requests
+python-dateutil
 google-api-python-client
 google-auth
+dateparser
+fastapi
+uvicorn
+langchain
+langchain-community
 openai
-requests

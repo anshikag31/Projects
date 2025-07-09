@@ -20,7 +20,7 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                res = requests.post("https://calendar-zo7z.onrender.com/chat", json={"text": user_input})
+                res = requests.post("https://calendar-zo7z.onrender.com", json={"text": user_input})
                 res.raise_for_status()
                 reply = res.json().get("response", "⚠️ No response key in backend reply.")
             except Exception:

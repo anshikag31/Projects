@@ -1,4 +1,4 @@
-from langchain_community.chat_models import ChatTogether  # ✅ Using Together.ai
+from langchain_together import ChatTogether # ✅ Using Together.ai
 from langchain.tools import Tool
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferMemory

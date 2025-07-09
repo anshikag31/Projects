@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import re
 import os
 from dateparser.search import search_dates
-from .calendar_utils import check_availability, book_appointment
+from backend.calendar_utils import check_availability, book_appointment
 
 # ✅ Set Together API key via Render Environment Variables
 # os.environ["TOGETHER_API_KEY"] = "your_api_key"  # Already done in Render

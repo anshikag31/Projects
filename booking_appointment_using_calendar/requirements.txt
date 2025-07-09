@@ -9,3 +9,6 @@ uvicorn
 langchain
 langchain-community
 openai
+langchain>=0.1.17
+langchain-community>=0.0.28
+together>=0.2.10

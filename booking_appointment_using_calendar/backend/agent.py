@@ -1,17 +1,19 @@
-from langchain_community.chat_models import ChatTogether
+from langchain_community.chat_models import ChatTogether  # ✅ Using Together.ai
 from langchain.tools import Tool
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferMemory
 from datetime import datetime, timedelta
-from dateparser.search import search_dates
 import re
 import os
+from dateparser.search import search_dates
+from calendar_utils import check_availability, book_appointment
 
-from backend.calendar_utils import check_availability, book_appointment
+# ✅ Set Together API key via Render Environment Variables
+# os.environ["TOGETHER_API_KEY"] = "your_api_key"  # Already done in Render
 
-# Initialize Together.ai LLM (API key must be set in Render environment)
+# 🔧 Use Together.ai's Mixtral model
 llm = ChatTogether(
-    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1",  # or use "meta-llama/Llama-2-70b-chat-hf"
     temperature=0.7,
     max_tokens=512
 )
@@ -52,7 +54,7 @@ def book_appointment_wrapper(text: str) -> str:
         return book_appointment(summary, start_dt.isoformat(), end_dt.isoformat())
 
     except Exception as e:
-        return f"❌ Error while booking: {e}"
+        return f"❌ Oops! Something went wrong while booking: {e}"
 
 def check_availability_wrapper(text: str) -> str:
     try:
@@ -64,18 +66,24 @@ def check_availability_wrapper(text: str) -> str:
         return check_availability(start_dt.isoformat(), end_dt.isoformat())
 
     except Exception as e:
-        return f"❌ Error while checking availability: {e}"
+        return f"❌ Oops! Something went wrong while checking availability: {e}"
 
 tools = [
     Tool(
         name="CheckAvailability",
         func=check_availability_wrapper,
-        description="Use this tool to check if a time slot is available."
+        description=(
+            "Check if a time slot is available. Say: 'Is next Monday at 3pm free?'. "
+            "Assumes a 30-minute window if no end time is given."
+        )
     ),
     Tool(
         name="BookAppointment",
         func=book_appointment_wrapper,
-        description="Use this tool to book a calendar meeting."
+        description=(
+            "Book a calendar meeting. Say: 'Book a meeting next Monday at 3pm for 1 hour'. "
+            "Defaults to 30 minutes if no duration is given."
+        )
     )
 ]
 

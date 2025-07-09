@@ -1,15 +1,20 @@
-from langchain_community.llms import Ollama  # ✅ Avoid deprecation
+from langchain_community.chat_models import ChatTogether
 from langchain.tools import Tool
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferMemory
 from datetime import datetime, timedelta
-import re
 from dateparser.search import search_dates
+import re
+import os
+
 from backend.calendar_utils import check_availability, book_appointment
 
-
-# Use local LLaMA 3 model via Ollama
-llm = Ollama(model="gemma3")
+# Initialize Together.ai LLM (API key must be set in Render environment)
+llm = ChatTogether(
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    temperature=0.7,
+    max_tokens=512
+)
 
 def parse_future_datetime(text: str):
     results = search_dates(
@@ -24,20 +29,15 @@ def parse_future_datetime(text: str):
     return results[0][1]
 
 def book_appointment_wrapper(text: str) -> str:
-    import re
-    from datetime import timedelta
-    from calendar_utils import book_appointment, parse_future_datetime
-
-    summary = "Meeting"
-
     try:
+        summary = "Meeting"
         parts = text.lower().split(" for ")
         time_part = parts[0].replace("book", "").strip()
         duration_phrase = parts[1] if len(parts) == 2 else "30 minutes"
 
         start_dt = parse_future_datetime(time_part)
         if not start_dt:
-            return "❌ Sorry, I couldn't understand the time you mentioned. Please try something like 'Book a meeting tomorrow at 4pm for 1 hour'."
+            return "❌ Sorry, I couldn't understand the time you mentioned. Try: 'Book a meeting tomorrow at 4pm for 1 hour'."
 
         minutes = 30
         match = re.search(r"(\d+)\s*min", duration_phrase)
@@ -52,42 +52,30 @@ def book_appointment_wrapper(text: str) -> str:
         return book_appointment(summary, start_dt.isoformat(), end_dt.isoformat())
 
     except Exception as e:
-        return f"❌ Oops! Something went wrong while booking: {e}"
-
+        return f"❌ Error while booking: {e}"
 
 def check_availability_wrapper(text: str) -> str:
-    from datetime import timedelta
-    from calendar_utils import check_availability, parse_future_datetime
-
     try:
         start_dt = parse_future_datetime(text)
         if not start_dt:
-            return "❌ Sorry, I couldn't understand the time you mentioned. Please try something like 'Is tomorrow at 3pm available?'."
+            return "❌ Sorry, I couldn't understand the time. Try: 'Is tomorrow at 3pm available?'."
 
         end_dt = start_dt + timedelta(minutes=30)
         return check_availability(start_dt.isoformat(), end_dt.isoformat())
 
     except Exception as e:
-        return f"❌ Oops! Something went wrong while checking availability: {e}"
+        return f"❌ Error while checking availability: {e}"
 
 tools = [
     Tool(
         name="CheckAvailability",
         func=check_availability_wrapper,
-        description=(
-            "Use this tool to check if a time slot is available. "
-            "Say something like: 'Is next Monday at 3pm free?'. "
-            "Assumes a 30-minute window if no end time is given."
-        )
+        description="Use this tool to check if a time slot is available."
     ),
     Tool(
         name="BookAppointment",
         func=book_appointment_wrapper,
-        description=(
-            "Use this tool to book a calendar meeting. "
-            "Say: 'Book a meeting next Monday at 3pm for 1 hour'. "
-            "Defaults to 30 minutes if no duration is given."
-        )
+        description="Use this tool to book a calendar meeting."
     )
 ]
 

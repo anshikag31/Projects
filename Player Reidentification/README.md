@@ -23,7 +23,6 @@ This project simulates **real-time re-identification and tracking** of players i
 
 Player Reidentification/
 
-│
 ├── videos/ # Helper scripts for matching, drawing, etc.
 
    ├── input
@@ -31,6 +30,7 @@ Player Reidentification/
    ├── tracking_log.csv
    
 ├── track_players.py
+
 ├── README.md # Setup & run instructions
 
 ├── Report.pdf # Brief project report

@@ -10,7 +10,7 @@ This project simulates **real-time re-identification and tracking** of players i
 - **Video**: `input.mp4`
 - **Model**: Fine-tuned YOLOv11 trained on players and ball.
 
-[Download Model Weights](https://drive.google.com/file/d/1-5fOSHOSB9UXYPenOoZNAMScrePVcMD/view)
+## Download Model - https://drive.google.com/file/d/1-5fOSHOSB9UXYPenOoZNAMScrePVcMD/view
 
 
 ## Features
@@ -23,14 +23,14 @@ This project simulates **real-time re-identification and tracking** of players i
 
 Player Reidentification/
 │
-├── models # Main script for running detection and tracking
-   ├── best.pt
 ├── videos/ # Helper scripts for matching, drawing, etc.
    ├── input
    ├── output
    ├── tracking_log.csv
+├── track_players.py
 ├── README.md # Setup & run instructions
-├── report.md # Brief project report
+├── Report.pdf # Brief project report
+├── requirements.txt
 
 ## Dependencies
 
@@ -40,4 +40,6 @@ deep-sort-realtime
 Python 3.8+
 Pandas
 NumPy
+
+## Output video link: https://drive.google.com/file/d/1UyCZyp8kb1qQq9sQ1PutHQUW-E-yu5vq/view?usp=sharing
 

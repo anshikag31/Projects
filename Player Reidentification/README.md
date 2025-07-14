@@ -28,8 +28,6 @@ Player Reidentification/
     ├── input.mp4
 
     ├── tracking_log.csv
-   
-├── track_players.py
 
 ├── README.md # Setup & run instructions
 
@@ -37,13 +35,21 @@ Player Reidentification/
 
 ├── requirements.txt
 
+├── track_players.py
+
+
 ## Dependencies
 
 opencv-python
+
 ultralytics
+
 deep-sort-realtime
+
 Python 3.8+
+
 Pandas
+
 NumPy
 
 ## Output video link: https://drive.google.com/file/d/1UyCZyp8kb1qQq9sQ1PutHQUW-E-yu5vq/view?usp=sharing

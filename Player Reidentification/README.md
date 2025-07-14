@@ -25,9 +25,9 @@ Player Reidentification/
 
 ├── videos/ # Helper scripts for matching, drawing, etc.
 
-         ├── input
+    ├── input.mp4
 
-         ├── tracking_log.csv
+    ├── tracking_log.csv
    
 ├── track_players.py
 

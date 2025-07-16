@@ -1,4 +1,4 @@
-# track_players.py
+
 import cv2
 import csv
 from ultralytics import YOLO
